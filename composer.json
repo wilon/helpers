@@ -1,0 +1,29 @@
+{
+    "name": "wilon/support",
+    "description": "Some support package.",
+    "license": "MIT",
+    "homepage": "https://wilon.github.io",
+    "support": {
+        "issues": "https://github.com/wilon/support/issues",
+        "source": "https://github.com/wilon/support"
+    },
+    "keywords": ["php", "support"],
+    "authors": [
+        {
+            "name": "Weilong Wang",
+            "email": "wilonx@163.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "phpunit/phpunit": "^6.4"
+    },
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
