@@ -46,7 +46,7 @@ if (! function_exists('timeDebug')) {
      * @param  string $separate
      * @return array
      */
-    function timeDebug(string $mark = null, $echo = true, string $separate = '')
+    function timeDebug($mark = null, $echo = true, string $separate = '')
     {
         global $timeDebug;
         $separate = $separate ?: (PHP_SAPI == 'cli' ? PHP_EOL : '<br>');
