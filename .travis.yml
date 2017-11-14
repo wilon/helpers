@@ -23,3 +23,10 @@ install:
 
 script:
   - vendor/bin/phpunit --verbose --coverage-text
+
+notifications:
+  email:
+    recipients:
+      - wilonx@163.com
+    on_success: never
+    on_failure: never
