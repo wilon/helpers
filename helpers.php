@@ -1,11 +1,11 @@
 <?php
 
-if (! function_exists('path')) {
+if (! function_exists('getFullUrl')) {
     /**
      * Get the full URL.
      * @return string
      */
-    function getFullURL()
+    function getFullUrl()
     {
         if (PHP_SAPI == 'cli') return false;
         $s = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on' ? 's' : '';
@@ -46,7 +46,7 @@ if (! function_exists('timeDebug')) {
      * @param  string $separate
      * @return array
      */
-    function timeDebug($mark = null, $echo = true, string $separate = '')
+    function timeDebug($mark = '', $echo = true, string $separate = '')
     {
         global $timeDebug;
         $separate = $separate ?: (PHP_SAPI == 'cli' ? PHP_EOL : '<br>');
@@ -64,7 +64,7 @@ if (! function_exists('timeDebug')) {
         if (array_key_exists($endKey - 1, $arr)) {
             $timeDiff = sprintf('%.5f', $arr[$endKey] - $arr[$endKey - 1]);
             $separate = '    >> ' . $timeDiff . 's' . $separate;
-            $markDiff = $endKey . '_' . $endKey - 1;
+            $markDiff = $endKey . '_' . ($endKey - 1);
             $markDiffKey = $mark . '_diff';
             $timeDebug[$markDiffKey][$markDiff] = $timeDiff;
         }

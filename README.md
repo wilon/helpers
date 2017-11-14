@@ -18,3 +18,9 @@
 ```
 composer require wilon/support:dev-master
 ```
+
+## Test
+
+```
+vendor/bin/phpunit --verbose --coverage-text
+```
