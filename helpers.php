@@ -1,5 +1,29 @@
 <?php
 
+if (! function_exists('br')) {
+    function br()
+    {
+        // windows      echo "\r\n";
+        // unix\linux   echo "\n";
+        // mac          echo "\r";
+        return PHP_SAPI == 'cli' ? PHP_EOL : '<br>';
+    }
+}
+
+if (! function_exists('indentJson')) {
+    /**
+     * A better show for json.
+     */
+    function indentJson($data)
+    {
+        $json = json_encode($data, JSON_PRETTY_PRINT);
+        if (PHP_SAPI == 'cli') return $json;
+        $search = ["\r", "\n", " "];
+        $replace = ['<br>', '<br>', '&nbsp;'];
+        return str_replace($search, $replace, $json);
+    }
+}
+
 if (! function_exists('getFullUrl')) {
     /**
      * Get the full URL.

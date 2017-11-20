@@ -16,9 +16,11 @@ final class HelpersTest extends TestCase
         $this->dir = path(__DIR__, '..');
     }
 
-    public function testGetFullURL()
+    public function testFunc()
     {
-        echo getFullURL();
+        echo getFullURL(), br();
+        echo getFullURL(), br();
+        echo indentJson(['a' => 'xx', 'b' => ['ccc', 3, 'c']]);
     }
 
     public function testPath()
