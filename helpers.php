@@ -123,16 +123,10 @@ if (! function_exists('getCertInfo')) {
             STREAM_CLIENT_CONNECT,
             $g
         );
-        if (!$r) return false;
         $cert = stream_context_get_params($r);
-        return $certInfo = openssl_x509_parse(
+        $certInfo = openssl_x509_parse(
             $cert['options']['ssl']['peer_certificate']
         );
-            $g = stream_context_create(array(
-            "ssl" => array(
-                "capture_peer_cert" => true
-            ),
-        ));
         if ($certInfo) return $certInfo;
 
         $ch = curl_init();
@@ -146,7 +140,7 @@ if (! function_exists('getCertInfo')) {
         curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,  2);
         $result = curl_exec($ch);
         if (curl_errno($ch) != 0) {
-            $error = ("Error:".curl_errno($ch)." ".curl_error($ch));
+            $error = "Error:" . curl_errno($ch) . " " . curl_error($ch);
             return $error;
         }
         fseek($fp, 0);
