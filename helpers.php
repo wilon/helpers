@@ -210,7 +210,7 @@ if (! function_exists('simpleCurl')) {
 
         // curl init
         $ch = curl_init();
-        if ($param['method'] == 'get' && $param['data']) {
+        if ($param['method'] == 'GET' && $param['data']) {
             $joint = $parseUrl['query'] ? '&' : '?';
             $url .= $joint . http_build_query($param['data']);
         }
