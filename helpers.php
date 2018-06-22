@@ -226,7 +226,7 @@ if (! function_exists('simpleCurl')) {
         // header
         $header = [];
         if (strpos(json_encode($param['header']), 'User-Agent') === false) {
-            $header[] = 'User-Agent:Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/55.0.2883.95 Safari/537.36';
+            $header[] = 'User-Agent: Wilon-PHP-SimpleCurl <github.com/wilon/support>';
         }
         if (is_string($param['header'])) {
             foreach (explode("\n", $param['header']) as $v) {
