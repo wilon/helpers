@@ -271,7 +271,7 @@ if (! function_exists('simpleCurl')) {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
             case "PATCH":
-                curl_setopt($ch, CULROPT_CUSTOMREQUEST, 'PATCH');
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
             case "DELETE":
