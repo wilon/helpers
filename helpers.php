@@ -16,7 +16,7 @@ if (! function_exists('indentJson')) {
      */
     function indentJson($data = [])
     {
-        $json = json_encode($data, JSON_PRETTY_PRINT);
+        $json = json_encode($data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
         if (PHP_SAPI == 'cli') return $json;
         $search = ["\r", "\n", " "];
         $replace = ['<br>', '<br>', '&nbsp;'];
