@@ -44,7 +44,7 @@ final class HelpersTest extends TestCase
 
     public function testGetCertInfo()
     {
-        $info = getCertInfo('bastion.ifeng.com');
+        $info = getCertInfo('bastion.baidu.com');
         var_dump($info);
         return $info;
     }
