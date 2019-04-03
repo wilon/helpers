@@ -1,12 +1,11 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
 use DiDom\Document;
 
 /**
  * @covers helpers
  */
-final class HelpersTest extends TestCase
+final class HelpersTest extends PHPUnit_Framework_TestCase
 {
 
     protected $dir;

@@ -17,7 +17,7 @@ sudo: false
 
 install:
   - travis_retry composer install --no-interaction
-  - travis_retry composer update --dev --prefer-lowest --prefer-stable
+  - travis_retry composer update --dev
 
 script:
   - vendor/bin/phpunit tests/HelpersTest.php ${GH_USER}@${GH_PWD}
