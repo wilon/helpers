@@ -20,7 +20,7 @@ install:
   - travis_retry composer update --dev
 
 script:
-  - vendor/bin/phpunit tests/HelpersTest.php ${GH_USER}@${GH_PWD}
+  - vendor/bin/phpunit tests/HelpersTest.php ${GH_USER} ${GH_PWD}
 
 notifications:
   email:
