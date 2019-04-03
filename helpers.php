@@ -187,35 +187,22 @@ if (! function_exists('simpleCurl')) {
         if (!isset($param['return'])) $param['return'] = 'body';
         if (!isset($param['cookie_dir'])) $param['cookie_dir'] = '';
 
-        // cookie keep
-        $dir = trim($param['cookie_dir']);
-        $keepCookie = false;
-        if (!empty($dir) && is_dir($dir) && is_writable($dir)) {
-            $sessionKey = md5($parseUrl['host'] . 'simple-curl');
-            $cookieFunc = function (
-                $action = 'get',
-                $cookieData = []
-            ) use (
-                $sessionKey,
-                $dir
-            ) {
-                if ($action == 'set') {
-                    return @file_put_contents("$dir/$sessionKey", json_encode($cookieData));
-                } else {
-                    return json_decode(@file_get_contents("$dir/$sessionKey"), true);
-                }
-            };
-            $keepCookie = true;
-        }
-
         // curl init
         $ch = curl_init();
         if ($param['method'] == 'GET' && $param['data']) {
-            $joint = $parseUrl['query'] ? '&' : '?';
+            $joint = isset($parseUrl['query']) ? '&' : '?';
             $url .= $joint . http_build_query($param['data']);
         }
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+
+        // cookie keep
+        $dir = trim($param['cookie_dir']);
+        if (!empty($dir) && is_dir($dir) && is_writable($dir)) {
+            $sessionKey = md5($parseUrl['host'] . 'simple-curl');
+            curl_setopt($ch, CURLOPT_COOKIEJAR, "$dir/$sessionKey");
+            curl_setopt($ch, CURLOPT_COOKIEFILE, "$dir/$sessionKey");
+        }
 
         // https
         if ($parseUrl['scheme'] == 'https') {
@@ -226,7 +213,7 @@ if (! function_exists('simpleCurl')) {
         // header
         $header = [];
         if (strpos(json_encode($param['header']), 'User-Agent') === false) {
-            $header[] = 'User-Agent: Wilon-PHP-SimpleCurl <github.com/wilon/support>';
+            $header[] = 'User-Agent: PHP-SimpleCurl <github.com/wilon/support>';
         }
         if (is_string($param['header'])) {
             foreach (explode("\n", $param['header']) as $v) {
@@ -237,45 +224,25 @@ if (! function_exists('simpleCurl')) {
         }
         curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
 
-        // cookie keep
-        $curloptCookie = '';
-        if ($keepCookie == true) {
-            $cookieData = $cookieFunc('get');
-        } else {
-            $cookieData = array();
-        }
-        if (is_string($param['cookie'])) {
-            $curloptCookie .= $param['cookie'];
-        } else if (is_array($param['cookie']) && is_array($cookieData)) {
-            $cookieData = array_merge($cookieData, $param['cookie']);
-        }
-        if ($cookieData) {
-            foreach ($cookieData as $k => $v) {
-                $curloptCookie .= "$k=$v;";
-            }
-        }
-        curl_setopt($ch, CURLOPT_COOKIE, $curloptCookie);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-
         // method
         switch ($param['method']){
-            case "GET" :
+            case 'GET' :
                 curl_setopt($ch, CURLOPT_HTTPGET, true);
                 break;
-            case "POST":
-                curl_setopt($ch, CURLOPT_POST,true);
+            case 'POST':
+                curl_setopt($ch, CURLOPT_POST, true);
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
-            case "PUT" :
-                curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+            case 'PUT' :
+                curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
-            case "PATCH":
+            case 'PATCH':
                 curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PATCH');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
-            case "DELETE":
-                curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+            case 'DELETE':
+                curl_setopt ($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 curl_setopt($ch, CURLOPT_POSTFIELDS, $param['data']);
                 break;
         }
@@ -288,18 +255,6 @@ if (! function_exists('simpleCurl')) {
         $header = trim(substr($response, 0, $headerSize));
         $body = trim(substr($response, $headerSize));
         curl_close($ch);
-
-        // update cookie
-        preg_match_all('/Set-Cookie:(.*?)\n/', $header, $matchesCookie);
-        if (is_array($matchesCookie[1])) {
-            foreach ($matchesCookie[1] as $setCookie) {
-                foreach (explode(';', $setCookie) as $cookieStr) {
-                    @list($key, $value) = explode('=', trim($cookieStr));
-                    $cookieData[$key] = $value;
-                }
-            }
-        }
-        if ($keepCookie == true) $cookieFunc('set', $cookieData);
 
         // return
         $return = $param['return'] == 'header' ? $header :

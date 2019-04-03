@@ -3,6 +3,7 @@ language: php
 cache:
     directories:
         - vendor
+        - cache
         - $HOME/.composer/cache
 
 php:
@@ -10,15 +11,16 @@ php:
   - 5.6
   - 7.0
   - 7.1
+  - 7.2
 
 sudo: false
 
 install:
   - travis_retry composer install --no-interaction
-  - travis_retry composer require phpunit/phpunit
+  - travis_retry composer update --dev
 
 script:
-  - vendor/bin/phpunit --verbose --coverage-text
+  - vendor/bin/phpunit tests/HelpersTest.php ${GH_USER}@${GH_PWD}
 
 notifications:
   email:

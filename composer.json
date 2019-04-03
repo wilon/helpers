@@ -24,5 +24,9 @@
     },
     "config": {
         "sort-packages": true
+    },
+    "require-dev": {
+        "imangazaliev/didom": "^1.14",
+        "phpunit/phpunit": "^7.5"
     }
 }
